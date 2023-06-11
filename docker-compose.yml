@@ -13,6 +13,10 @@ services:
   prometheus:
     image: prom/prometheus:v2.17.1
     container_name: prometheus
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
@@ -34,6 +38,10 @@ services:
   alertmanager:
     image: prom/alertmanager:v0.20.0
     container_name: alertmanager
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     volumes:
       - ./alertmanager:/etc/alertmanager
     command:
@@ -50,6 +58,10 @@ services:
   nodeexporter:
     image: prom/node-exporter:v0.18.1
     container_name: nodeexporter
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -70,6 +82,10 @@ services:
   cadvisor:
     image: gcr.io/google-containers/cadvisor:v0.34.0
     container_name: cadvisor
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -87,6 +103,10 @@ services:
   grafana:
     image: grafana/grafana:6.7.2
     container_name: grafana
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -105,6 +125,10 @@ services:
   pushgateway:
     image: prom/pushgateway:v1.2.0
     container_name: pushgateway
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     restart: unless-stopped
     expose:
       - 9091
@@ -116,6 +140,10 @@ services:
   caddy:
     image: stefanprodan/caddy
     container_name: caddy
+    deploy:
+      placement:
+        constraints:
+          - node.labels.node == docker-desktop
     ports:
       - "3000:3000"
       - "9090:9090"
